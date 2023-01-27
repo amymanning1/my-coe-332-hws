@@ -5,21 +5,13 @@ mars_radius = 3389.5    # km
 
 def calc_gcd(latitude_1: float, longitude_1: float, latitude_2: float, longitude_2: float) -> float: 
     lat1, lon1, lat2, lon2 = map( math.radians, [latitude_1, longitude_1, latitude_2, longitude_2])
-    """
-    This function takes pairs of latitudes and longitudes and calculates the distance between two points on a spherical surface
 
-    Args: 
-    latitude_1 (float): a float value of latitude
-    longitude_1 (float): a float value of longitude
-    latitude_2 (float)
-    """
     d_sigma = math.acos( math.sin(lat1) * math.sin(lat2) + math.cos(lat1) * math.cos(lat2) * math.cos(abs(lon1-lon2)))
     return ( mars_radius * d_sigma )
 
 with open('Sites.json', 'r') as f:
     meteor_data = json.load(f)
 
-#print(calc_gcd(16.0, 82.0, Sites[dict_1]['latitude'], Sites[dict_1]['longitude']))
 
 count = 0 # allows us to iterate through if statement with the initial latitude and longitude and keep track of which leg of journey rover is on
 max_speed = 10 # km / hr

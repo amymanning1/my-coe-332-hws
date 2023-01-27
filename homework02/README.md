@@ -1,4 +1,11 @@
 # Homework 2: Rover Sampling Meteor Sites
 This homework assignment creates a dataset of meteor compositions and locations and calculates the time it takes to sample all sites. 
 # Contents
+generate_sites.py generates data on the composition of each meteorite (stony, iron, or stony-iron) as well as the latitude and longitude of the site. The data is then converted to a JSON file. calculate_trip.py takes the data from the JSON file and calculates the distance between each site given an initial latitude and longitude going in order from list index. The time it takes to go between sites as well as the time it takes to sample each meteorite is recorded and displayed to the user along with the leg number of the trip. At the end, the total time is displayed as well as the total number of legs.
+# Specifics
+generate_sites.py generates random latitude, longitude, and compositions into corresponding lists. The function rand_lat_long returns the list data for lat_list and longitude_list. A separate function, rand_comp, returns the site_comp_list. Each "leg" is a separate dictionary of material containing the site id,
+latitude, longitude, and composition. Data is added to numbered dictionaries by indexing that leg number minus one of each list. Another dictionary is created with the key 'sites' and the value as a list of the dictionaries created. The data is then stored in 'Sites.json'. 
 
+calculate_trip.py simulates the rover moving from site to site based on their dictionary index. The function calc_gcd finds the distance between two points using the great circle distance algorithm. A for loop is used to run every site through the function. The distance is then divided by the speed to get a travel time value. The composition is also being checked at every site to determine how long it will take to sample. Both time values are added to a running total time to be displayed at the end of the rover's journey. 
+# Instructions
+First, run generate_sites.py which will generate 5 random meteorite sites (latitude, longitude, and composition) and save the data as a json file. From there, you can run calculate_trip.py which will display data on the travel time between sites, leg number, time to sample, total legs, and total time elapsed.  

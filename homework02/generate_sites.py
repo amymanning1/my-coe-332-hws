@@ -1,6 +1,6 @@
 
 # function that generates random latitudes and longitudes, run it through for loop to get 5 
-# 
+
 import random
 import json
 
