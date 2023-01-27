@@ -5,6 +5,14 @@ mars_radius = 3389.5    # km
 
 def calc_gcd(latitude_1: float, longitude_1: float, latitude_2: float, longitude_2: float) -> float: 
     lat1, lon1, lat2, lon2 = map( math.radians, [latitude_1, longitude_1, latitude_2, longitude_2])
+    """
+    This function takes pairs of latitudes and longitudes and calculates the distance between two points on a spherical surface
+
+    Args: 
+    latitude_1 (float): a float value of latitude
+    longitude_1 (float): a float value of longitude
+    latitude_2 (float)
+    """
     d_sigma = math.acos( math.sin(lat1) * math.sin(lat2) + math.cos(lat1) * math.cos(lat2) * math.cos(abs(lon1-lon2)))
     return ( mars_radius * d_sigma )
 
