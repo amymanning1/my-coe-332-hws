@@ -1,6 +1,6 @@
 # Water Turbidity Testing
 ## Objective & Contents
-The purpose of this assignment is to determine the turbidity levels of water and indicate if it is safe to use to the user. In this folder, `homework03`, you will find 3 scipts: this `README.md`, `analyze_water.py`, and `test_analyze_water.py`. `analyze_water.py` takes in json data, calculates the turbidity, then tells the user if the water is safe, or how long until the water will be safe. The final script is used for unit testing and can be employed by typing `pytest` in the command line when inside `homework03` directory. 
+The purpose of this assignment is to determine the turbidity levels of water and indicate if it is safe to use to the user. In this folder, `homework03`, you will find 3 scripts: this `README.md`, `analyze_water.py`, and `test_analyze_water.py`. `analyze_water.py` takes in json data, calculates the turbidity, then tells the user if the water is safe, or how long until the water will be safe. The final script is used for unit testing and can be employed by typing `pytest` in the command line when inside `homework03` directory. 
 ## How to Access the Data
 The [data](https://raw.githubusercontent.com/wjallen/turbidity/main/turbidity_data.json) was imported from GitHub. Using `requests.get(url='<dataurl>')` from the requests python library to use the data in `analyze_water.py`. 
 ## Description of the Script
