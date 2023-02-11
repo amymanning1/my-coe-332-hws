@@ -8,7 +8,7 @@ def calc_turb(turb_data) -> float:
     """
     Calculates turbidity of water based on the 5 latest recorded data from turb_data.
 
-    This function makes a list of the last five items in the list of dictionaries turb_data and stores them in the list last_five. It uses a for loop to find the turbidity of each element in last_five using the turbidity formula and keeps a running total so once each element is calculated the average turbidity can be found by dividing by the size of last_element. Depending on if the average turbidity (T0) is above or below the safe limit as message is displayed to the user on if the water is usable.
+    This function makes a list of the last five items in the list of dictionaries turb_data and stores them in the list last_five. It uses a for loop to find the turbidity of each element in last_five using the turbidity formula and keeps a running total so once each element is calculated the average turbidity can be found by dividing by the size of last_five. Depending on if the average turbidity (T0) is above or below the safe limit as message is displayed to the user on if the water is usable.
 
     Args:
         turb_data (dictionary): A dictionary with one key with its values being a list of dictionaries. Each smaller dictionary contains data used to calculate the turbidity, as well as the scientist who obtained the data.
@@ -37,7 +37,7 @@ def calc_turb(turb_data) -> float:
         
     return T0
 
-def min_time(T0) -> str:
+def min_time(T0) -> float:
     """
     Given the average turbidity, this function calculates the minimum time until turbid water is safe to consume using an exponential decay relationship.
     Args:
