@@ -8,11 +8,17 @@ Inside `analyze_water.py`, the function `calc_turb` calculates turbidity of wate
 ## How to Run
 Begin running your code by typing `python3 analyze_water.py` into your terminal if you are in the `homework03` directory. If you are not in the directory, navigate there using the `cd` command followed by whichever direction you need to go. The output of your program should look like one of these examples depending on the turbidity levels. 
 > The current water turbidity is  0.6819744  NTU.
+
 > The water is safe.
+
 > Minimum time required to return below a safe threshold =  0  hours 
-or 
+
+or
+ 
 > The current water turbidity is 20 NTU.
+
 > The water is not safe. The turbidity levels are above the safe threshold.
+
 > Minimum time required to return below a safe threshold = 148.2837041 hours
 
 To run the test script, simply type `pytest` in your command line once in the `homework03` directory. To check your version of pytest, type `pytest --version` and the version will be printed. 
