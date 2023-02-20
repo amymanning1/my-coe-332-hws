@@ -46,11 +46,10 @@ def state_vec(epoch) -> list:
     epoch_list = []
     for d in data['ndm']['oem']['body']['segment']['data']['stateVector']:
         epoch_list.append(d['EPOCH'])
-    if 'epoch' in epoch_list:
-        for i in data['ndm']['oem']['body']['segment']['data']['stateVector']:
-            if 'epoch' == i['EPOCH']:
-                spec_state = i['stateVector']
-                return spec_state
+    if epoch in epoch_list:
+        ind = epoch_list.index(epoch)
+        spec_state = data['ndm']['oem']['body']['segment']['data']['stateVector'][ind] 
+        return spec_state
     else:
         return 'Error, please enter a valid Epoch value'
 
