@@ -20,18 +20,39 @@ def entire_set() -> dict:
     return data
 
 @app.route('/epochs', methods=['GET'])
-def get_epochs(data) -> list:
+def get_epochs() -> list:
     """
     This function generates a list of all Epochs in the data set.
 
-    Args: data (dict): A dictionary of the entire data set
+    Args: there are no parameters called in the function definition, however the dictionary 'data' is accessed in this function.
 
     Return: epoch_list (list): A list of all epochs in the dataset. 
     """
     epoch_list = []
-    for d in data:
+    #return list(data['ndm']['oem']['body']['segment']['data'].keys())
+    for d in data['ndm']['oem']['body']['segment']['data']['stateVector']:
         epoch_list.append(d['EPOCH'])
     return epoch_list
+
+@app.route('/epochs/<epoch>', methods=['GET'])
+def state_vec(epoch) -> list:
+    """
+    This function displays a state vector for a specific Epoch from the data set referenced by the user in the query line.
+
+    Args: epoch (str): A epoch referenced by the user in the query line. 
+
+    Return: spec_state (list): Information specific to a certain state vector queried by the user.
+    """
+    epoch_list = []
+    for d in data['ndm']['oem']['body']['segment']['data']['stateVector']:
+        epoch_list.append(d['EPOCH'])
+    if 'epoch' in epoch_list:
+        for i in data['ndm']['oem']['body']['segment']['data']['stateVector']:
+            if 'epoch' == i['EPOCH']:
+                spec_state = i['stateVector']
+                return spec_state
+    else:
+        return 'Error, please enter a valid Epoch value'
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
