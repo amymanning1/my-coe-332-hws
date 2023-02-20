@@ -1,7 +1,5 @@
 from flask import Flask
-import xmltodict
-import requests
-
+import xmltodict, requests, math
 app = Flask(__name__)
 
 url='https://nasa-public-data.s3.amazonaws.com/iss-coords/current/ISS_OEM/ISS.OEM_J2K_EPH.xml'
@@ -39,7 +37,7 @@ def state_vec(epoch) -> list:
     """
     This function displays a state vector for a specific Epoch from the data set referenced by the user in the query line.
 
-    Args: epoch (str): A epoch referenced by the user in the query line. 
+    Args: epoch (str): An epoch referenced by the user in the query line that is available in the data set. 
 
     Return: spec_state (list): Information specific to a certain state vector queried by the user.
     """
@@ -50,6 +48,29 @@ def state_vec(epoch) -> list:
         ind = epoch_list.index(epoch)
         spec_state = data['ndm']['oem']['body']['segment']['data']['stateVector'][ind] 
         return spec_state
+    else:
+        return 'Error, please enter a valid Epoch value'
+
+@app.route('/epochs/<epoch>/speed', methods=['GET'])
+def calc_speed(epoch) -> float:
+    """
+    This function calculates the instantaneous speed for a specific Epoch queried by the user in the data set
+
+    Args: epoch (str): An epoch referenced by the user in the query line that is available in the data set.
+
+    Return: speed (float): The instantaneous speed for a specific epoch calculated using the formula for speed from Cartesian velocity vectors. 
+    """
+    epoch_list = []
+    for d in data['ndm']['oem']['body']['segment']['data']['stateVector']:
+        epoch_list.append(d['EPOCH'])
+    if epoch in epoch_list:
+        ind = epoch_list.index(epoch)
+        spec_state = data['ndm']['oem']['body']['segment']['data']['stateVector'][ind]
+        x_dot = float(spec_state['X_DOT']['#text'])
+        y_dot = float(spec_state['Y_DOT']['#text'])
+        z_dot = float(spec_state['Z_DOT']['#text'])
+        speed = math.sqrt(x_dot**2 + y_dot**2 + z_dot**2)
+        return str(speed) 
     else:
         return 'Error, please enter a valid Epoch value'
 
