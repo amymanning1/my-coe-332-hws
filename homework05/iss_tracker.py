@@ -103,13 +103,16 @@ def help() -> str:
     Return: help_str (str): A long string that provides brief descriptions of all available routes and their methods.
     """
     help_str = """This program accesses different data elements from the ISS Trajectory site by NASA. Available routes include:
-    /                               returns the entire data set
-    /epochs?limit=1&offset=4        where the entire path is enclosed in quotes if the ampersand is used. This returns a list of epochs up to the user's limit beginning at the user queried offset. There are default values for limit and offset so the user can truncate the question mark and everything after it if they desire.
-    /epochs/<epoch>                 returns the state vector associated with the specific epoch requested in the <>
-    /epochs/<epoch>/speed           calculates the instantaneous speed of a user-queried epoch"""
+    /                               returns the entire data set ('GET' method)
+    /epochs?limit=1&offset=4        where the entire path is enclosed in quotes if the ampersand is used. This returns a list of epochs up to the user's limit beginning at the user queried offset. There are default values for limit and offset so the user can truncate the question mark and everything after it if they desire. ('GET' method)
+    /epochs/<epoch>                 returns the state vector associated with the specific epoch requested in the <> ('GET' method)
+    /epochs/<epoch>/speed           calculates the instantaneous speed of a user-queried epoch ('GET' method)
+    /delete-data                    deletes the entire data set ('DELETE' method)
+    /post-data                      replaces deleted data ('POST' method)
+    """
     return help_str
 
-@app.route('/delete-data', methods=['GET'])
+@app.route('/delete-data', methods=['DELETE'])
 def delete_data() -> dict:
     """
     This function deletes all the memory for the data set. 
@@ -125,6 +128,16 @@ def delete_data() -> dict:
         json.dump(data_usable, m)
     return []
 
+@app.route('/post-data', methods=['POST'])
+def replace_data() -> dict:
+    """
+    This function replaces the data in data_usable using a 'get' request.
+    Args: none
+    Returns: usable_data (dict): the data replaced. 
+    """
+    data_usable = json.dumps(data)
+    data_usable = json.loads(data_usable)
+    return data_usable
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
