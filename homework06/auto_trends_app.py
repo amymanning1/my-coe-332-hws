@@ -53,6 +53,9 @@ def get_years():
     Returns: yr_list (list): a list of all years data was collected by the EPA
     """
     yr_list=[]
+    if list_of_dict == None:
+        return 'there is no data, use POST to add data'
+        exit()
     for item in list_of_dict:
             key = f"{item['Manufacturer']}:{item['Model Year']}:{item['Vehicle Type']}"
             yr = rd.hget(key,'Model Year')
