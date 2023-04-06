@@ -38,6 +38,7 @@ Check that they built using
 - type `kubectl get pods` and copy the name of the py-debug pod
 - to exec into the shell, type: `kubectl exec -it <py-debug-name from get pods> -- /bin/bash`
 6. Once you are exec'd into the shell, you can do`<some curl command>` (examples in next section) This is where the user accesses the data
+7. To exit the exec type exit. 
 ## Example Queries and Outputs
 * `curl <redis service IP>:5000/data` returns the entire data set (hundreds of dictionaries like this one)
 	- **Example Output**: ` {
