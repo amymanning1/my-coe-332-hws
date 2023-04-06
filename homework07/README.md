@@ -20,6 +20,7 @@ To pull this image from Docker Hub, type `docker pull amymanning1/auto_trends_ap
 ### Build a New Image from the Dockerfile
 To build a new image using the existing Dockerfile in this repo, `docker build -t <dockerhubusername>/auto_trends_app:2.0 .` filling in the <> with your Docker Hub username. Check that the image built using `docker images`. You will have to rebuild the image using the above command any time you change the python app or Dockerfile. To push the built image to docker, `docker push<dockerhubusername>/auto_trends_app:2.0` Replace the image in `amym-test-flask-deployment.yml` image name to `<yourdockerhubusername>/auto_trends_app:2.0` instead of amymanning1 as the username.
 ## Launch the Containerized App & Redis from kube-access
+**Important Note** in the student vm (or something similar, not kube-access) edit the `amym-test-flask-deployment.yml` file such that the `value:<some IP>` is the value of the redis-pvc service IP address. This should be the same IP address that you later curl with once exec'd into py-debugger. You can access this IP by typing `kubectl get services` inside kubernetes. Edit the flask deployment file outside kubernetes, then push it to github and update the docker image. Make sure you do this before you pull the git repo to your kube-access. 
 To launch the program, the safest bet is to follow this line of commands:
 1. Type the command `ssh kube-access` to get inside kubernetes
 2. Follow the instructions in the section titled 'Cloning the Git Repository' and type `cd /my-coe-332-hws/homework07`
