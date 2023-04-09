@@ -16,7 +16,7 @@ Then, to copy this to your virtual machine, do this: `scp username@login-coe332.
 ## Getting the Docker Image
 In a vm (not inside kube-access), build or pull the image from Dockerhub
 ### Pull the Image from Docker
-To pull this image from Docker Hub, type `docker pull amymanning1/auto_trends_app:2.0` in your command line. Ensure you are in the same directory as `auto_trends_app.py`.
+To pull this image from Docker Hub, type `docker pull amymanning1/auto_trends_app:hw07` in your command line. Ensure you are in the same directory as `auto_trends_app.py`.
 ### Build a New Image from the Dockerfile
 To build a new image using the existing Dockerfile in this repo, `docker build -t <dockerhubusername>/auto_trends_app:2.0 .` filling in the <> with your Docker Hub username. Check that the image built using `docker images`. You will have to rebuild the image using the above command any time you change the python app or Dockerfile. To push the built image to docker, `docker push<dockerhubusername>/auto_trends_app:2.0` Replace the image in `amym-test-flask-deployment.yml` image name to `<yourdockerhubusername>/auto_trends_app:2.0` instead of amymanning1 as the username.
 ## Launch the Containerized App & Redis from kube-access
