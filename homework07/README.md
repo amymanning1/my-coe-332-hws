@@ -20,7 +20,7 @@ To pull this image from Docker Hub, type `docker pull amymanning1/auto_trends_ap
 ### Build a New Image from the Dockerfile
 To build a new image using the existing Dockerfile in this repo, `docker build -t <dockerhubusername>/auto_trends_app:hw07 .` filling in the <> with your Docker Hub username. Check that the image built using `docker images`. You will have to rebuild the image using the above command any time you change the python app or Dockerfile. To push the built image to docker, `docker push<dockerhubusername>/auto_trends_app:hw07` Replace the image in `amym-test-flask-deployment.yml` image name to `<yourdockerhubusername>/auto_trends_app:hw07` instead of amymanning1 as the username.
 ## Launch the Containerized App & Redis from kube-access
-**Important Note** in the student vm (or something similar, not kube-access) edit the `amym-test-flask-deployment.yml` file such that the `value:<some IP>` is the value of the redis-pvc service IP address. This should be the same IP address that you later curl with once exec'd into py-debugger. You can access this IP by typing `kubectl get services` inside kubernetes. Edit the flask deployment file outside kubernetes, then push it to github and update the docker image. Make sure you do this before you pull the git repo to your kube-access. 
+**Important Note** in the student vm (or something similar, not kube-access) edit the `amym-test-flask-deployment.yml` file such that the `value:<some IP>` is the value of the redis service IP address. You can access this IP by typing `kubectl get services` inside kubernetes. Edit the flask deployment file outside kubernetes, then push it to github and update the docker image. Make sure you do this before you pull the git repo to your kube-access. 
 To launch the program, the safest bet is to follow this line of commands:
 1. Type the command `ssh kube-access` to get inside kubernetes
 2. Follow the instructions in the section titled 'Cloning the Git Repository' and type `cd /my-coe-332-hws/homework07`
@@ -34,14 +34,14 @@ Check that they built using
 - `kubectl get services`
 - `kubectl get deployments`
 - `kubectl get pods`
-4. Type `kubectl get services` and copy the IP address associated with `amym-test-redis-pvc.yml`
+4. Type `kubectl get services` and copy the IP address associated with `amym-test-flask-service.yml`
 5. To exec into a shell means to start a shell session inside a container. For this software we will exec into the py-debug (assuming user already has this pod) 
 - type `kubectl get pods` and copy the name of the py-debug pod
 - to exec into the shell, type: `kubectl exec -it <py-debug-name from get pods> -- /bin/bash`
 6. Once you are exec'd into the shell, you can do`<some curl command>` (examples in next section) This is where the user accesses the data
 7. To exit the exec type exit. 
 ## Example Queries and Outputs
-* `curl <redis service IP>:5000/data` returns the entire data set (hundreds of dictionaries like this one)
+* `curl <flask service IP>:5000/data` returns the entire data set (hundreds of dictionaries like this one)
 	- **Example Output**: ` {
     "2-Cycle MPG": "31.49453",
     "4 or Fewer Gears": "0.637",
@@ -68,11 +68,11 @@ Check that they built using
     "Horsepower (HP)": "134.3903",
     "Manufacturer": "Honda",
     "Model Year": "1994",...}`  
-* `curl -X POST <redis service IP>:5000/data` adds the data to a redis database
+* `curl -X POST <flask service IP>:5000/data` adds the data to a redis database
 	- **Example Output**: `data loaded into redis`
-* `curl -X DELETE <redis service IP>:5000/data` deletes all the data from the redis database
+* `curl -X DELETE <flask service IP>:5000/data` deletes all the data from the redis database
 	- **Example Output**: `data deleted, there are len([]) keys in the db`
-* `curl <redis service IP>:5000/years` returns a list of all the years recorded in the dataset. 
+* `curl <flask service IP>:5000/years` returns a list of all the years recorded in the dataset. 
 	- **Example Output**: `[
   "2005",
   "1991",
@@ -83,7 +83,7 @@ Check that they built using
   "1975",
   "2018",
   "2011", ...]`
-* `curl <redis service IP>:5000/years/1999` returns a list of all the data from the year 1999
+* `curl <flask service IP>:5000/years/1999` returns a list of all the data from the year 1999
 	- **Example Output**: `[
   {
     "2-Cycle MPG": "24.08907",
