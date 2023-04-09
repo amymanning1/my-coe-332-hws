@@ -20,7 +20,7 @@
        containers:
          - name: amym-test-flask-app
            imagePullPolicy: Always
-           image: amymanning1/auto_trends_app:2.0
+           image: amymanning1/auto_trends_app:hw07
            env:
            - name: REDIS_IP
              value: 10.233.26.3
