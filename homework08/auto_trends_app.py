@@ -14,7 +14,11 @@ def get_redis_client():
     Args: none
     Returns: redis client: connects redis to flask and docker
     """
-    return redis.Redis(host=os.getenv('REDIS_IP','redis-db'), port=6379, db=0, decode_responses=True)
+    redis_ip = os.environ.get('REDIS_IP')
+    if not redis_ip:
+    raise Exception()
+    rd=redis.Redis(host=redis_ip, port=6379, db=0, decode_responses=True)
+    return rd
 rd = get_redis_client()
 
 @app.route('/data', methods=['GET', 'POST', 'DELETE'])

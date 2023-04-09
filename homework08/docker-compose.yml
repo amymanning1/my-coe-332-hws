@@ -15,6 +15,6 @@ services:
             dockerfile: ./Dockerfile
         depends_on:
             - redis-db
-        image: amymanning1/auto_trends_app:hw07
+        image: amymanning1/auto_trends_app:hw08
         ports:
             - 5000:5000
