@@ -18,3 +18,5 @@ services:
         image: amymanning1/auto_trends_app:hw08
         ports:
             - 5000:5000
+        volumes:
+            - ./data:/data
