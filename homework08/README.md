@@ -12,13 +12,13 @@ user will type`git clone git@github.com:amymanning1/my-coe-332-hws.git`
 Cloning a Git repository is essentially copying that repo that is available online to a user’s personal system. For this specific program, you will be using 'homework07'.
 ## How To Access and Download Data
 From [this](https://www.epa.gov/automotive-trends/explore-automotive-trends-data#DetailedData) page, scroll towards the bottom of the page until you see table A-1. Click A-1 on the sidebar and once the data set is selected, click the blue rectangular export button above the table. Save this data in a place easily accessible to your local computer and name it `auto-trends-manufacturer.csv`. In your local terminal, secure copy this data over to the class TACC page or whatever secured medium you want to transport your data to by the following command: `[local]$ scp data.csv username@login-coe332.tacc.utexas.edu:~/`
-Then, to copy this to your virtual machine, do this: `scp username@login-coe332.tacc.utexas.edu:~/data.csv ./`. From there, copy the raw data into the same directory where this repo is cloned.
+Then, to copy this to your virtual machine, do this: `scp username@login-coe332.tacc.utexas.edu:~/auto-trends-manufacturer.csv ./`. From there, copy the raw data into the same directory where this repo is cloned.
 ## Getting the Docker Image
 In a vm (not inside kube-access), build or pull the image from Dockerhub
 ### Pull the Image from Docker
-To pull this image from Docker Hub, type `docker pull amymanning1/auto_trends_app:hw07` in your command line. Ensure you are in the same directory as `auto_trends_app.py`.
+To pull this image from Docker Hub, type `docker pull amymanning1/auto_trends_app:hw08` in your command line. Ensure you are in the same directory as `auto_trends_app.py`.
 ### Build a New Image from the Dockerfile
-To build a new image using the existing Dockerfile in this repo, `docker build -t <dockerhubusername>/auto_trends_app:hw07 .` filling in the <> with your Docker Hub username. Check that the image built using `docker images`. You will have to rebuild the image using the above command any time you change the python app or Dockerfile. To push the built image to docker, `docker push<dockerhubusername>/auto_trends_app:hw07` Replace the image in `amym-test-flask-deployment.yml` image name to `<yourdockerhubusername>/auto_trends_app:hw07` instead of amymanning1 as the username.
+To build a new image using the existing Dockerfile in this repo, `docker build -t <dockerhubusername>/auto_trends_app:hw08 .` filling in the <> with your Docker Hub username. Check that the image built using `docker images`. You will have to rebuild the image using the above command any time you change the python app or Dockerfile. To push the built image to docker, `docker push<dockerhubusername>/auto_trends_app:hw08` Replace the image in `amym-test-flask-deployment.yml` image name to `<yourdockerhubusername>/auto_trends_app:hw08` instead of amymanning1 as the username.
 ## Launch the Containerized App & Redis from kube-access
 **Important Note** in the student vm (or something similar, not kube-access) edit the `amym-test-flask-deployment.yml` file such that the `value:<some IP>` is the value of the redis service IP address. You can access this IP by typing `kubectl get services` inside kubernetes. Edit the flask deployment file outside kubernetes, then push it to github and update the docker image. Make sure you do this before you pull the git repo to your kube-access. 
 To launch the program, the safest bet is to follow this line of commands:
@@ -109,3 +109,6 @@ Check that they built using
     "HP/Engine Displacement": "0.921254",
     "HP/Weight (lbs)": "0.046528" ....}, {....},....
 ]`   
+* `curl -X POST <flask service IP>:5000/image` generates a plot of weight vs mpg of vehicles from 2021
+	- **Example Output**: ``
+ 
