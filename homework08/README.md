@@ -110,5 +110,11 @@ Check that they built using
     "HP/Weight (lbs)": "0.046528" ....}, {....},....
 ]`   
 * `curl -X POST <flask service IP>:5000/image` generates a plot of weight vs mpg of vehicles from 2021
-	- **Example Output**: ``
- 
+	- **Example Output**: `image has been loaded to redis`
+* `curl -X GET <flask service IP>:5000/image --output filename.png` returns the generated image to the user if it exists
+	- **Example Output**: 
+` % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 23811  100 23811    0     0  3321k      0 --:--:-- --:--:-- --:--:-- 3321k`
+* `curl -X DELETE <flask service IP>:5000/image` deletes the generated image from redis database if it exists
+	- **Example Output**: `image deleted` 
