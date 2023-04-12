@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: amym-test-redis-service
+  labels:
+    username: amym
+    env: test
+spec:
+  type: ClusterIP
+  selector:
+    app: amym-test-redis
+  ports:
+  - name: amym-test-redis
+    port: 6379
+    targetPort: 6379
