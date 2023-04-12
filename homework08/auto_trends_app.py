@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, send_file
 import matplotlib.pyplot as plt
 import numpy as np
 import redis, csv, json, os
@@ -14,7 +14,7 @@ redis_ip = os.environ.get('REDIS_IP')
 if not redis_ip:
     raise Exception()
 rd=redis.Redis(host=redis_ip, port=6379, db=0, decode_responses=True)
-rd1=redis.Redis(host=redis_ip, port=6379, db=1, decode_responses=True)
+rd1=redis.Redis(host=redis_ip, port=6379, db=1)
 
 @app.route('/data', methods=['GET', 'POST', 'DELETE'])
 def handle_data():
@@ -98,8 +98,11 @@ def disp_image():
     if request.method == 'POST':
         mpg_list=[]
         weight_list=[]
-        if list_of_dict == None:
-            return 'there is no data, cannot generate plot'
+        output_list = []
+        for item in rd.keys():
+            output_list.append(rd.hgetall(item))
+        if output_list == []:
+            return 'there is no data, cannot generate plot\n'
             exit()
         else:
             for item in list_of_dict:
@@ -120,7 +123,7 @@ def disp_image():
             file_bytes = open('./data/weight_mpg_plt_2021.png', 'rb').read()
 # set the file bytes as a key in Redis
             rd1.set('plotimage', file_bytes)
-            return 'image has been loaded to redis'
+            return 'image has been loaded to redis\n'
 
     elif request.method == 'GET':
         #check if image is in database
@@ -131,11 +134,15 @@ def disp_image():
                 f.write(rd1.get('plotimage'))
             return send_file(path, mimetype='image/png', as_attachment=True)
         else:
-            return 'image is not in database'
+            return 'image is not in database\n'
 
     elif request.method == 'DELETE':
         # delete image from redis
-        return 'image deleted'
+        if rd1.exists('plotimage'):
+            rd1.flushdb()
+            return 'image deleted\n'
+        else:
+            return 'database is empty, nothing to flush\n'
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
