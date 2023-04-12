@@ -1,4 +1,6 @@
 from flask import Flask, request
+import matplotlib.pyplot as plt
+import numpy as np
 import redis, csv, json, os
 from csv import DictReader
 app = Flask(__name__)
@@ -8,18 +10,11 @@ with open(filename, 'r') as f:
     dict_reader = csv.DictReader(f) 
     list_of_dict = list(dict_reader)
 
-def get_redis_client():
-    """
-    This function initializes the redis client.
-    Args: none
-    Returns: redis client: connects redis to flask and docker
-    """
-    redis_ip = os.environ.get('REDIS_IP')
-    if not redis_ip:
+redis_ip = os.environ.get('REDIS_IP')
+if not redis_ip:
     raise Exception()
-    rd=redis.Redis(host=redis_ip, port=6379, db=0, decode_responses=True)
-    return rd
-rd = get_redis_client()
+rd=redis.Redis(host=redis_ip, port=6379, db=0, decode_responses=True)
+rd1=redis.Redis(host=redis_ip, port=6379, db=1, decode_responses=True)
 
 @app.route('/data', methods=['GET', 'POST', 'DELETE'])
 def handle_data():
@@ -43,7 +38,7 @@ def handle_data():
 
     elif request.method == 'DELETE':
         rd.flushdb()
-        return f'data deleted, there are len({rd.keys()}) keys in the db\n'
+        return f'data deleted, there are 0 keys in the db\n'
 
     else:
         return 'wrong method\n'
@@ -92,6 +87,55 @@ def year_data(year):
             if yr == str(year):
                 yr_data.append(item)
         return yr_data
+
+@app.route('/image', methods=['GET', 'POST', 'DELETE'])
+def disp_image():
+    """
+    This function downloads an image of a plot that compares a vehicles weight to its fuel efficiency from the year 2021
+    Args: there are no arguments
+    Returns: send_file(path, mimetype='image/png', as_attachment=True) (png image): png image of plot downloaded to redis
+    """
+    if request.method == 'POST':
+        mpg_list=[]
+        weight_list=[]
+        if list_of_dict == None:
+            return 'there is no data, cannot generate plot'
+            exit()
+        else:
+            for item in list_of_dict:
+                key = f"{item['Manufacturer']}:{item['Model Year']}:{item['Vehicle Type']}"
+                yr = rd.hget(key,'Model Year')
+                if yr == '2021':
+                    yr = float(yr)
+                    mpg = rd.hget(key, 'Real-World MPG')
+                    if mpg != '-':
+                        mpg_list.append(float(mpg))
+                        weight = rd.hget(key, 'Weight (lbs)')
+                        weight_list.append(float(weight))
+            plt.scatter(weight_list,mpg_list)
+            plt.title('Vehicle Weight vs Fuel Economy in 2021')
+            plt.xlabel('Weight (lbs)')
+            plt.ylabel('Miles per Gallon')
+            plt.savefig('/data/weight_mpg_plt_2021.png')
+            file_bytes = open('./data/weight_mpg_plt_2021.png', 'rb').read()
+# set the file bytes as a key in Redis
+            rd1.set('plotimage', file_bytes)
+            return 'image has been loaded to redis'
+
+    elif request.method == 'GET':
+        #check if image is in database
+        # if so, return image
+        if rd1.exists('plotimage'):
+            path='/data/weight_mpg_plt_2021.png'
+            with open(path,'wb') as f:
+                f.write(rd1.get('plotimage'))
+            return send_file(path, mimetype='image/png', as_attachment=True)
+        else:
+            return 'image is not in database'
+
+    elif request.method == 'DELETE':
+        # delete image from redis
+        return 'image deleted'
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
