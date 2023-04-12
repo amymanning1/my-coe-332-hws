@@ -120,7 +120,7 @@ def disp_image():
             plt.xlabel('Weight (lbs)')
             plt.ylabel('Miles per Gallon')
             plt.savefig('/data/weight_mpg_plt_2021.png')
-            file_bytes = open('./data/weight_mpg_plt_2021.png', 'rb').read()
+            file_bytes = open('/data/weight_mpg_plt_2021.png', 'rb').read()
 # set the file bytes as a key in Redis
             rd1.set('plotimage', file_bytes)
             return 'image has been loaded to redis\n'
