@@ -119,7 +119,7 @@ def disp_image():
             plt.title('Vehicle Weight vs Fuel Economy in 2021')
             plt.xlabel('Weight (lbs)')
             plt.ylabel('Miles per Gallon')
-            plt.savefig('/data/weight_mpg_plt_2021.png')
+            plt.savefig('./weight_mpg_plt_2021.png')
             file_bytes = open('/data/weight_mpg_plt_2021.png', 'rb').read()
 # set the file bytes as a key in Redis
             rd1.set('plotimage', file_bytes)
@@ -129,7 +129,7 @@ def disp_image():
         #check if image is in database
         # if so, return image
         if rd1.exists('plotimage'):
-            path='/data/weight_mpg_plt_2021.png'
+            path='./weight_mpg_plt_2021.png'
             with open(path,'wb') as f:
                 f.write(rd1.get('plotimage'))
             return send_file(path, mimetype='image/png', as_attachment=True)
